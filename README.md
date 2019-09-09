@@ -2,21 +2,24 @@
  What is travisa php package
  </h3>
  <p>
- This package has been designed to use travisa travel insruance easy and fast;
+ This package has been designed to use travisa travel insurance easy and fast;
  </p>
  
  <h4>How to use ... </h4>
  Creating a new instance of object
- ~~~
- $azki_travisa = new AzkiTravisa('****', '****');
- ~~~
+
+```php
+ $azki_travisa = new SamanTravelSoapClient('****', '****');
+```
  
  <h4>Getting List Of Countries</h4>
- ~~~
+```php
  $countries = $azki_travisa->getCountries();
- ~~~
+```
+
+
  Here is a sample output of getCountries
- ~~~
+ ```php
  stdClass Object
      (
          [getCountriesResult] => stdClass Object
@@ -53,7 +56,4 @@
              )
          )
      )
-~~~
-<h4>
-
-</h4>
+```
