@@ -1,0 +1,25 @@
+{
+  "name": "mhndev/saman-travel",
+  "type": "library",
+  "description": "library for saman travel insurance api (travisa)",
+  "license": "Apache-2.0",
+  "authors": [
+    {
+      "name": "Majid Abdolhosseini",
+      "email": "majid8911303@gmail.com"
+    },
+    {
+      "name": "Hamid Gholami",
+      "email": "hamidgholamy@yahoo.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": { "mhndev\\travel\\saman\\": "src/" }
+  },
+  "minimum-stability": "stable",
+  "require": {
+    "ext-json": "*",
+    "ext-soap": "*"
+  }
+
+}
