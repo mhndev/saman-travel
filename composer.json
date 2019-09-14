@@ -14,7 +14,7 @@
     }
   ],
   "autoload": {
-    "psr-4": { "mhndev\\travel\\saman\\": "src/" }
+    "psr-4": { "mhndev\\samanTravel\\": "src/" }
   },
   "minimum-stability": "stable",
   "require": {
