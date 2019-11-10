@@ -1,10 +1,19 @@
 <?php
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+
+use mhndev\samanTravel\SamanTravelSoapClient;
+
 include 'vendor/autoload.php';
 
-use \azkitravisa\AzkiTravisa;
 
-$azki_travisa = new AzkiTravisa('ws@AZKI_webTravis', 'Ws35@9gRtpok22n');
+$azki_travisa = new SamanTravelSoapClient('ws@AZKI_webTravis', 'Ws35@9gRtpok22n');
+
+die('here');
+
 /*
 //Getting All of the countries
 $countries = $azki_travisa->getCountries();
