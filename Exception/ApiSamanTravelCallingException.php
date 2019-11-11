@@ -2,10 +2,10 @@
 namespace mhndev\samanTravel\Exception;
 
 /**
- * Class ApiResponseException
+ * Class ApiSamanTravelCallingException
  * @package mhndev\samanTravel\Exception
  */
-class ApiResponseException extends BaseException
+class ApiSamanTravelCallingException extends BaseException
 {
 
 }

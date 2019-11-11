@@ -1,11 +1,13 @@
 <?php
 namespace mhndev\samanTravel\Exception;
 
+use Exception;
+
 /**
- * Class ApiResponseException
+ * Class BaseException
  * @package mhndev\samanTravel\Exception
  */
-class ApiResponseException extends BaseException
+abstract class BaseException extends Exception
 {
 
 }

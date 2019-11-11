@@ -3,6 +3,7 @@ namespace mhndev\samanTravel;
 
 use Exception;
 use mhndev\samanTravel\Exception\ApiResponseException;
+use mhndev\samanTravel\Exception\ApiSamanTravelCallingException;
 use SoapClient;
 use SoapFault;
 use stdClass;
@@ -56,6 +57,8 @@ class SamanTravelSoapClient implements iSamanTravelClient
         if(! is_null($this->soap_client)) {
             return $this->soap_client;
         }
+
+        ini_set('default_socket_timeout', 600);
 
         try{
             $this->soap_client = new SoapClient(
@@ -122,6 +125,7 @@ class SamanTravelSoapClient implements iSamanTravelClient
     /**
      * @return stdClass
      * @throws ApiResponseException
+     * @throws ApiSamanTravelCallingException
      * @sample
      * stdClass Object
      * (
@@ -162,24 +166,51 @@ class SamanTravelSoapClient implements iSamanTravelClient
      */
     function getCountries()
     {
-        $countries = $this->getSoapClient()->getCountries([
-            'username'      => $this->user_name,
-            'password'      => $this->password
-        ]);
+        try{
+            $countries = $this->getSoapClient()->getCountries([
+                'username'      => $this->user_name,
+                'password'      => $this->password
+            ]);
+        }
+        catch (SoapFault $e) {
+            throw new ApiSamanTravelCallingException($e->getMessage());
+        }
+
         return $countries;
     }
+
+
+//    /**
+//     * @param $name
+//     * @param $arguments
+//     */
+//    function __call($name, $arguments)
+//    {
+//        try{
+//            return call_user_func_array([$this, $methodName], $args);
+//        }
+//        catch (SoapFault $e) {
+//            throw new ApiAsmariCallingException($e->getMessage());
+//        }
+//
+//    }
 
 
     /**
      * @return mixed
      * @throws ApiResponseException
+     * @throws ApiSamanTravelCallingException
      */
     function getDurationsOfStay()
     {
-        $durations_of_stay = $this->getSoapClient()->getDurationsOfStay([
-            'username'      => $this->user_name,
-            'password'      => $this->password
-        ]);
+        try {
+            $durations_of_stay = $this->getSoapClient()->getDurationsOfStay([
+                'username'      => $this->user_name,
+                'password'      => $this->password
+            ]);
+        } catch (SoapFault $e) {
+            throw new ApiSamanTravelCallingException($e->getMessage());
+        }
 
         return $durations_of_stay;
     }
@@ -191,16 +222,21 @@ class SamanTravelSoapClient implements iSamanTravelClient
      * @param int $duration_of_stay_code
      * @return mixed
      * @throws ApiResponseException
+     * @throws ApiSamanTravelCallingException
      */
     function getPlansWithDetail(int $country_code, string $birth_date, int $duration_of_stay_code)
     {
-        $plan_detail = $this->getSoapClient()->getPlansWithDetail([
-            'username'          =>$this->user_name,
-            'password'          =>$this->password,
-            'countryCode'       => $country_code,
-            'birthDate'         => $birth_date,
-            'durationOfStay'    => $duration_of_stay_code
-        ]);
+        try {
+            $plan_detail = $this->getSoapClient()->getPlansWithDetail([
+                'username'          =>$this->user_name,
+                'password'          =>$this->password,
+                'countryCode'       => $country_code,
+                'birthDate'         => $birth_date,
+                'durationOfStay'    => $duration_of_stay_code
+            ]);
+        } catch (SoapFault $e) {
+            throw new ApiSamanTravelCallingException($e->getMessage());
+        }
 
         return $plan_detail;
     }
@@ -218,14 +254,20 @@ class SamanTravelSoapClient implements iSamanTravelClient
      * @param int $country_code
      * @return mixed
      * @throws ApiResponseException
+     * @throws ApiSamanTravelCallingException
      */
     function getCountry(int $country_code)
     {
-        $country_detail = $this->getSoapClient()->getCountry([
-            'username'      =>$this->user_name,
-            'password'      =>$this->password,
-            'countryCode'   => $country_code
-        ]);
+        try {
+            $country_detail = $this->getSoapClient()->getCountry([
+                'username'      =>$this->user_name,
+                'password'      =>$this->password,
+                'countryCode'   => $country_code
+            ]);
+
+        } catch (SoapFault $e) {
+            throw new ApiSamanTravelCallingException($e->getMessage());
+        }
 
         return $country_detail;
     }
@@ -235,14 +277,20 @@ class SamanTravelSoapClient implements iSamanTravelClient
      * @param int $plan_code
      * @return stdClass
      * @throws ApiResponseException
+     * @throws ApiSamanTravelCallingException
      */
     function getPlan(int $plan_code)
     {
-        $plan_detail = $this->getSoapClient()->getPlan([
-            'username'      =>$this->user_name,
-            'password'      =>$this->password,
-            'planCode'      => $plan_code
-        ]);
+        try {
+            $plan_detail = $this->getSoapClient()->getPlan([
+                'username'      =>$this->user_name,
+                'password'      =>$this->password,
+                'planCode'      => $plan_code
+            ]);
+
+        } catch (SoapFault $e) {
+            throw new ApiSamanTravelCallingException($e->getMessage());
+        }
 
         return $plan_detail;
     }
@@ -255,17 +303,23 @@ class SamanTravelSoapClient implements iSamanTravelClient
      * @param int $plan_code
      * @return stdClass
      * @throws ApiResponseException
+     * @throws ApiSamanTravelCallingException
      */
     function getPriceInquiry(int $country_code, string $birth_date, int $duration_of_stay, int $plan_code)
     {
-        $price_info = $this->getSoapClient()->getPriceInquiry([
-            'username'          =>$this->user_name,
-            'password'          =>$this->password,
-            'countryCode'       => $country_code,
-            'birthDate'         => $birth_date,
-            'durationOfStay'    => $duration_of_stay,
-            'planCode'          => $plan_code
-        ]);
+        try {
+            $price_info = $this->getSoapClient()->getPriceInquiry([
+                'username'          =>$this->user_name,
+                'password'          =>$this->password,
+                'countryCode'       => $country_code,
+                'birthDate'         => $birth_date,
+                'durationOfStay'    => $duration_of_stay,
+                'planCode'          => $plan_code
+            ]);
+
+        } catch (SoapFault $e) {
+            throw new ApiSamanTravelCallingException($e->getMessage());
+        }
 
         return $price_info;
     }
@@ -292,14 +346,20 @@ class SamanTravelSoapClient implements iSamanTravelClient
      * ];
      * @return stdClass registerInsuranceResult
      * @throws ApiResponseException
+     * @throws ApiSamanTravelCallingException
      */
     function registerInsurance(stdClass $TIS_insurance_info)
     {
-        $insurance_info = $this->getSoapClient()->registerInsurance([
-            'username'          =>$this->user_name,
-            'password'          =>$this->password,
-            'insuranceData'     => $TIS_insurance_info
-        ]);
+        try {
+            $insurance_info = $this->getSoapClient()->registerInsurance([
+                'username'          =>$this->user_name,
+                'password'          =>$this->password,
+                'insuranceData'     => $TIS_insurance_info
+            ]);
+
+        } catch (SoapFault $e) {
+            throw new ApiSamanTravelCallingException($e->getMessage());
+        }
 
         return $insurance_info;
     }
@@ -308,14 +368,20 @@ class SamanTravelSoapClient implements iSamanTravelClient
      * @param int $bimeh_no
      * @return stdClass registerInsuranceResult
      * @throws ApiResponseException
+     * @throws ApiSamanTravelCallingException
      */
     function confirmInsurance(int $bimeh_no)
     {
-        $confirmed_insurance = $this->getSoapClient()->confirmInsurance([
-            'username'          =>$this->user_name,
-            'password'          =>$this->password,
-            'bimehNo'           => $bimeh_no
-        ]);
+        try {
+            $confirmed_insurance = $this->getSoapClient()->confirmInsurance([
+                'username'          =>$this->user_name,
+                'password'          =>$this->password,
+                'bimehNo'           => $bimeh_no
+            ]);
+
+        } catch (SoapFault $e) {
+            throw new ApiSamanTravelCallingException($e->getMessage());
+        }
 
         return $confirmed_insurance;
     }
@@ -324,14 +390,20 @@ class SamanTravelSoapClient implements iSamanTravelClient
      * @param string $serial_no
      * @return stdClass getInsuranceResult
      * @throws ApiResponseException
+     * @throws ApiSamanTravelCallingException
      */
     function getInsurance(string $serial_no)
     {
-        $confirmed_insurance = $this->getSoapClient()->getInsurance([
-            'username'          =>$this->user_name,
-            'password'          =>$this->password,
-            'serialNo'           => $serial_no
-        ]);
+        try {
+            $confirmed_insurance = $this->getSoapClient()->getInsurance([
+                'username'          =>$this->user_name,
+                'password'          =>$this->password,
+                'serialNo'           => $serial_no
+            ]);
+
+        } catch (SoapFault $e) {
+            throw new ApiSamanTravelCallingException($e->getMessage());
+        }
 
         return $confirmed_insurance;
     }
@@ -340,14 +412,20 @@ class SamanTravelSoapClient implements iSamanTravelClient
      * @param string $serial_no
      * @return stdClass getInsurancePrintInfoResult
      * @throws ApiResponseException
+     * @throws ApiSamanTravelCallingException
      */
     function getInsurancePrintInfo(string $serial_no)
     {
-        $insurance_print_info = $this->getSoapClient()->getInsurancePrintInfo([
-            'username'          =>$this->user_name,
-            'password'          =>$this->password,
-            'serialNo'           => $serial_no
-        ]);
+        try {
+            $insurance_print_info = $this->getSoapClient()->getInsurancePrintInfo([
+                'username'          =>$this->user_name,
+                'password'          =>$this->password,
+                'serialNo'           => $serial_no
+            ]);
+
+        } catch (SoapFault $e) {
+            throw new ApiSamanTravelCallingException($e->getMessage());
+        }
 
         return $insurance_print_info;
     }
@@ -356,14 +434,20 @@ class SamanTravelSoapClient implements iSamanTravelClient
      * @param string $serial_no
      * @return stdClass cancelInsuranceResult
      * @throws ApiResponseException
+     * @throws ApiSamanTravelCallingException
      */
     function cancelInsurance(string $serial_no)
     {
-        $cancelation_result = $this->getSoapClient()->cancelInsurance([
-            'username'          =>$this->user_name,
-            'password'          =>$this->password,
-            'serialNo'           => $serial_no
-        ]);
+        try {
+            $cancelation_result = $this->getSoapClient()->cancelInsurance([
+                'username'          =>$this->user_name,
+                'password'          =>$this->password,
+                'serialNo'           => $serial_no
+            ]);
+
+        } catch (SoapFault $e) {
+            throw new ApiSamanTravelCallingException($e->getMessage());
+        }
 
         return $cancelation_result;
     }
@@ -372,6 +456,7 @@ class SamanTravelSoapClient implements iSamanTravelClient
      * @param array $array_customer_info
      * @return stdClass registerCustomerResult
      * @throws ApiResponseException
+     * @throws ApiSamanTravelCallingException
      * @sample
      * stdClass Object
      * (
@@ -398,7 +483,11 @@ class SamanTravelSoapClient implements iSamanTravelClient
         $array_customer_info['username'] = $this->user_name;
         $array_customer_info['password'] = $this->password;
 
-        $customer_info = $this->getSoapClient()->registerCustomer($array_customer_info);
+        try {
+            $customer_info = $this->getSoapClient()->registerCustomer($array_customer_info);
+        } catch (SoapFault $e) {
+            throw new ApiSamanTravelCallingException($e->getMessage());
+        }
 
         return $customer_info;
     }
@@ -408,6 +497,7 @@ class SamanTravelSoapClient implements iSamanTravelClient
      * @return stdClass getCustomerResult
      * stdClass Object
      * @throws ApiResponseException
+     * @throws ApiSamanTravelCallingException
      * @sample
      * (
      * [getCustomerResult] => stdClass Object
@@ -436,7 +526,11 @@ class SamanTravelSoapClient implements iSamanTravelClient
             'nationalCode'      => $national_code
         ];
 
-        $customer_info = $this->getSoapClient()->getCustomer($array);
+        try {
+            $customer_info = $this->getSoapClient()->getCustomer($array);
+        } catch (SoapFault $e) {
+            throw new ApiSamanTravelCallingException($e->getMessage());
+        }
 
         return $customer_info;
     }
@@ -445,6 +539,7 @@ class SamanTravelSoapClient implements iSamanTravelClient
      * @param array $array_customer_info
      * @return  mixed
      * @throws ApiResponseException
+     * @throws ApiSamanTravelCallingException
      * @sample
      * stdClass Object
      * (
@@ -472,7 +567,12 @@ class SamanTravelSoapClient implements iSamanTravelClient
         $array_customer_info['username'] = $this->user_name;
         $array_customer_info['password'] = $this->password;
 
-        $customer_info = $this->getSoapClient()->editCustomer($array_customer_info);
+        try {
+            $customer_info = $this->getSoapClient()->editCustomer($array_customer_info);
+        } catch (SoapFault $e) {
+            throw new ApiSamanTravelCallingException($e->getMessage());
+        }
+
         return $customer_info;
     }
 
@@ -482,16 +582,21 @@ class SamanTravelSoapClient implements iSamanTravelClient
      * @param int $country_code
      * @return mixed
      * @throws ApiResponseException
+     * @throws ApiSamanTravelCallingException
      */
     function getCustomerInsurances(string $national_code, string $passport_number, int $country_code)
     {
-        $customer_insurances = $this->getSoapClient()->getCustomerInsurances([
-            'username'          => $this->user_name,
-            'password'          => $this->password,
-            'nationalCode'      => $national_code,
-            'passportNo'        => $passport_number,
-            'countryCode'       => $country_code
-        ]);
+        try {
+            $customer_insurances = $this->getSoapClient()->getCustomerInsurances([
+                'username'          => $this->user_name,
+                'password'          => $this->password,
+                'nationalCode'      => $national_code,
+                'passportNo'        => $passport_number,
+                'countryCode'       => $country_code
+            ]);
+        } catch (SoapFault $e) {
+            throw new ApiSamanTravelCallingException($e->getMessage());
+        }
 
         return $customer_insurances;
     }
@@ -500,6 +605,7 @@ class SamanTravelSoapClient implements iSamanTravelClient
      * @param int $country_code
      * @return stdClass
      * @throws ApiResponseException
+     * @throws ApiSamanTravelCallingException
      * @sample
      * stdClass Object
      * (
@@ -528,11 +634,15 @@ class SamanTravelSoapClient implements iSamanTravelClient
      */
     function getCountryDurationsOfStay(int $country_code)
     {
-        $duration_of_stays = $this->getSoapClient()->getCountryDurationsOfStay([
-            'username'          => $this->user_name,
-            'password'          => $this->password,
-            'countryCode'      => $country_code
-        ]);
+        try {
+            $duration_of_stays = $this->getSoapClient()->getCountryDurationsOfStay([
+                'username'          => $this->user_name,
+                'password'          => $this->password,
+                'countryCode'      => $country_code
+            ]);
+        } catch (SoapFault $e) {
+            throw new ApiSamanTravelCallingException($e->getMessage());
+        }
 
         return $duration_of_stays;
     }
@@ -551,6 +661,7 @@ class SamanTravelSoapClient implements iSamanTravelClient
      * @param string $country_standard_code
      * @return stdClass
      * @throws ApiResponseException
+     * @throws ApiSamanTravelCallingException
      * @sample
      * stdClass Object
      * (
@@ -569,11 +680,15 @@ class SamanTravelSoapClient implements iSamanTravelClient
      */
     function getCountryByStandardCode(string $country_standard_code)
     {
-        $country = $this->getSoapClient()->getCountryByStandardCode([
-            'username'          => $this->user_name,
-            'password'          => $this->password,
-            'countryStandardCode'      => $country_standard_code
-        ]);
+        try {
+            $country = $this->getSoapClient()->getCountryByStandardCode([
+                'username'          => $this->user_name,
+                'password'          => $this->password,
+                'countryStandardCode'      => $country_standard_code
+            ]);
+        } catch (SoapFault $e) {
+            throw new ApiSamanTravelCallingException($e->getMessage());
+        }
 
         return $country;
     }
@@ -584,6 +699,7 @@ class SamanTravelSoapClient implements iSamanTravelClient
      * @param int|NULL $duration_of_stay
      * @return stdClass getPlansResult
      * @throws ApiResponseException
+     * @throws ApiSamanTravelCallingException
      * @sample
      * stdClass Object
      * (
@@ -628,13 +744,17 @@ class SamanTravelSoapClient implements iSamanTravelClient
         int $duration_of_stay = NULL
     )
     {
-        $country = $this->getSoapClient()->getPlans([
-            'username'          => $this->user_name,
-            'password'          => $this->password,
-            'countryCode'      => $country_code,
-            'birthDate'         => $birth_date,
-            'durationOfStay'    => $duration_of_stay
-        ]);
+        try {
+            $country = $this->getSoapClient()->getPlans([
+                'username'          => $this->user_name,
+                'password'          => $this->password,
+                'countryCode'      => $country_code,
+                'birthDate'         => $birth_date,
+                'durationOfStay'    => $duration_of_stay
+            ]);
+        } catch (SoapFault $e) {
+            throw new ApiSamanTravelCallingException($e->getMessage());
+        }
 
         return $country;
     }
