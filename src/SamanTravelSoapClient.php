@@ -1,7 +1,6 @@
 <?php
 namespace mhndev\samanTravel;
 
-use Exception;
 use mhndev\samanTravel\Exception\ApiResponseException;
 use mhndev\samanTravel\Exception\ApiSamanTravelCallingException;
 use SoapClient;
@@ -37,15 +36,20 @@ class SamanTravelSoapClient implements iSamanTravelClient
 
     /**
      * SamanTravelSoapClient constructor.
-     * @param $username
-     * @param $password
-     * @throws Exception
+     * @param string $username
+     * @param string $password
+     * @param string $url
      */
-    public function __construct($username, $password)
+    public function __construct(string $username, string $password, string $url)
     {
         $this->user_name    = $username;
         $this->password     = $password;
+
         $this->base_url     = 'http://samanservice.ir/TravisService.asmx?wsdl';
+
+        if($url) {
+            $this->base_url = $url;
+        }
     }
 
     /**
