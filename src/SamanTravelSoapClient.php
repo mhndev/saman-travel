@@ -40,16 +40,11 @@ class SamanTravelSoapClient implements iSamanTravelClient
      * @param string $password
      * @param string $url
      */
-    public function __construct(string $username, string $password, string $url)
+    public function __construct(string $url, string $username, string $password)
     {
+        $this->base_url = $url;
         $this->user_name    = $username;
         $this->password     = $password;
-
-        $this->base_url     = 'http://samanservice.ir/TravisService.asmx?wsdl';
-
-        if($url) {
-            $this->base_url = $url;
-        }
     }
 
     /**
