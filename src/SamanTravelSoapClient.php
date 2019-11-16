@@ -74,11 +74,15 @@ class SamanTravelSoapClient implements iSamanTravelClient
                 get_class($e) == SoapFault::class &&
                 strpos($e->getMessage(), "SOAP-ERROR: Parsing WSDL: Couldn't load from") !== false
             ) {
-                throw new ApiResponseException;
+                throw new ApiResponseException(
+                    sprintf("Exception Class : %s , Exception Message is : %s", get_class($e), $e->getMessage())
+                );
             }
 
             else {
-                throw new APIResponseException($e->getMessage());
+                throw new APIResponseException(
+                    sprintf("Exception Class : %s , Exception Message is : %s", get_class($e), $e->getMessage())
+                );
             }
         }
 
@@ -172,7 +176,9 @@ class SamanTravelSoapClient implements iSamanTravelClient
             ]);
         }
         catch (SoapFault $e) {
-            throw new ApiSamanTravelCallingException($e->getMessage());
+            throw new ApiSamanTravelCallingException(
+                sprintf("Exception Class : %s , Exception Message is : %s", get_class($e), $e->getMessage())
+            );
         }
 
         return $countries;
@@ -208,7 +214,9 @@ class SamanTravelSoapClient implements iSamanTravelClient
                 'password'      => $this->password
             ]);
         } catch (SoapFault $e) {
-            throw new ApiSamanTravelCallingException($e->getMessage());
+            throw new ApiSamanTravelCallingException(
+                sprintf("Exception Class : %s , Exception Message is : %s", get_class($e), $e->getMessage())
+            );
         }
 
         return $durations_of_stay;
@@ -234,7 +242,9 @@ class SamanTravelSoapClient implements iSamanTravelClient
                 'durationOfStay'    => $duration_of_stay_code
             ]);
         } catch (SoapFault $e) {
-            throw new ApiSamanTravelCallingException($e->getMessage());
+            throw new ApiSamanTravelCallingException(
+                sprintf("Exception Class : %s , Exception Message is : %s", get_class($e), $e->getMessage())
+            );
         }
 
         return $plan_detail;
@@ -265,7 +275,9 @@ class SamanTravelSoapClient implements iSamanTravelClient
             ]);
 
         } catch (SoapFault $e) {
-            throw new ApiSamanTravelCallingException($e->getMessage());
+            throw new ApiSamanTravelCallingException(
+                sprintf("Exception Class : %s , Exception Message is : %s", get_class($e), $e->getMessage())
+            );
         }
 
         return $country_detail;
@@ -288,7 +300,9 @@ class SamanTravelSoapClient implements iSamanTravelClient
             ]);
 
         } catch (SoapFault $e) {
-            throw new ApiSamanTravelCallingException($e->getMessage());
+            throw new ApiSamanTravelCallingException(
+                sprintf("Exception Class : %s , Exception Message is : %s", get_class($e), $e->getMessage())
+            );
         }
 
         return $plan_detail;
@@ -317,7 +331,9 @@ class SamanTravelSoapClient implements iSamanTravelClient
             ]);
 
         } catch (SoapFault $e) {
-            throw new ApiSamanTravelCallingException($e->getMessage());
+            throw new ApiSamanTravelCallingException(
+                sprintf("Exception Class : %s , Exception Message is : %s", get_class($e), $e->getMessage())
+            );
         }
 
         return $price_info;
